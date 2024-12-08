@@ -22,14 +22,14 @@
 /* These lengths can be adjusted, if necessary: */
 bootloader_usable_dram_end = 0x4087c610;
 bootloader_stack_overhead = 0x2000; /* For safety margin between bootloader data section and startup stacks */
-bootloader_dram_seg_len = 0xD264;
+bootloader_dram_seg_len = 0xD2670;
 bootloader_iram_loader_seg_len = 0x7000;
 bootloader_iram_seg_len = 0x4000;
 
 /* Start of the lower region is determined by region size and the end of the higher region */
-bootloader_dram_seg_end = bootloader_usable_dram_end - bootloader_stack_overhead;
-bootloader_dram_seg_start = bootloader_dram_seg_end - bootloader_dram_seg_len;
-bootloader_iram_loader_seg_start = bootloader_dram_seg_start - bootloader_iram_loader_seg_len;
+bootloader_dram_seg_end = bootloader_usable_dram_end - bootloader_stack_overhead; // 4087A610
+bootloader_dram_seg_start = bootloader_dram_seg_end - bootloader_dram_seg_len; // 407A7FA0
+bootloader_iram_loader_seg_start = bootloader_dram_seg_start - bootloader_iram_loader_seg_len; // 0x407A0FA0
 bootloader_iram_seg_start = bootloader_iram_loader_seg_start - bootloader_iram_seg_len;
 
 MEMORY
@@ -45,7 +45,7 @@ MEMORY
  * 2. Update the value in this assert.
  * 3. Update SRAM_DRAM_END in components/esp_system/ld/esp32c6/memory.ld.in to the same value.
  */
-ASSERT(bootloader_iram_loader_seg_start == 0x408663AC, "bootloader_iram_loader_seg_start inconsistent with SRAM_DRAM_END");
+ASSERT(bootloader_iram_loader_seg_start == 0x407A0FA0, "bootloader_iram_loader_seg_start inconsistent with SRAM_DRAM_END");
 
 /* Default entry point: */
 ENTRY(call_start_cpu0);
